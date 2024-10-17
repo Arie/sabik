@@ -1,0 +1,105 @@
+Discrete inputs (read only)
+Modbus Adress  Register                                Waardes  Beschrijving                    Data type
+0              Actieve alarmen                         0        Geen alarm actief               Single Bit
+0              Actieve alarmen                         1        Minimaal 1 alarm actief         Single Bit
+1              Filter alarm                            0        Alarm uit                       Single Bit # 1              Filter alarm                            1        Alarm aan                       Single Bit
+6              Temperatuur sensor (extract air) status 0        Correct                         Single Bit
+6              Temperatuur sensor (extract air) status 1        Fout                            Single Bit
+7              Temperatuur sensor (exhaust air) status 0        Correct                         Single Bit
+7              Temperatuur sensor (exhaust air) status 1        Fout                            Single Bit
+8              Temperatuur sensor (outdoor air) status 0        Correct                         Single Bit
+8              Temperatuur sensor (outdoor air) status 1        Fout                            Single Bit
+9              Temperatuur sensor (supply air) status  0        Correct                         Single Bit
+9              Temperatuur sensor (supply air) status  1        Fout                            Single Bit
+10             Extract air fan status                  0        Correct                         Single Bit
+10             Extract air fan status                  1        Fout                            Single Bit
+11             Supply air fan status                   0        Correct                         Single Bit
+11             Supply air fan status                   1        Fout                            Single Bit
+15             Automatic by-pass                       0        Niet Actief                     Single Bit
+15             Automatic by-pass                       1        Actief                          Single Bit
+28             Boost contact status                    0        Niet Actief                     Single Bit
+28             Boost contact status                    1        Actief                          Single Bit
+29             Boost status                            0        Boost actief                    Single Bit
+29             Boost status                            1        Boost niet Actief               Single Bit
+
+Output coils (read/write)
+Modbus Adress  Register                                Waardes  Beschrijving                     Instelling  Data type
+0              Reset filter alarm                      0        Niet resetten                             0  Single Bit
+0              Reset filter alarm                      1        Niet resetten                             0  Single Bit
+7              Handmatige by-pass                      0        Niet Actief                               0  Single Bit
+7              Handmatige by-pass                      1        Actief                                    0  Single Bit
+8              Toestaan automatische by-pass           0        Niet toestaan                             0  Single Bit
+8              Toestaan automatische by-pass           1        Toestaan                                  1  Single Bit
+9              Zomer modus status                      0        Uit                                       0  Single Bit
+9              Zomer modus status                      1        Aan                                       0  Single Bit
+16             Handmatige boost                        0        Uit                                       0  Single Bit
+16             Handmatige boost                        1        Aan                                       0  Single Bit
+17             Snooze mode (unit stopt voor 1h)        0        Uit                                       0  Single Bit
+17             Snooze mode (unit stopt voor 1h)        1        Aan                                       0  Single Bit
+25             Werk modus                              0        Handmatig                                 0  Single Bit
+25             Werk modus                              1        Automatisch                               0  Single Bit
+
+Input registers (read only)
+Modbus Adress  Register                               Waardes              Beschrijving                                 Data type
+4              Communicatie fout                      0                    Geen fout                                    16 bit word
+4              Communicatie fout                      1                    Afstandsbediening                            16 bit word
+4              Communicatie fout                      4                    Modbus RTU                                   16 bit word
+5              Ontdooi status                         0                    Niet Actief                                  16 bit word
+5              Ontdooi status                         1                    Actief (fireplace defrost)                   16 bit word
+5              Ontdooi status                         2                    Actief (met voorverwarmer)                   16 bit word
+5              Ontdooi status                         3                    Actief (onbalans in luchtvolume)             16 bit word
+25             Extract air temperatuur                -500…+600 dºC        dºC                                          16 bit word
+26             Exhaust air temperatuur                -500…+600 dºC        dºC                                          16 bit word
+27?            Outdoor air temperatuur                -500…+600 dºC        dºC                                          16 bit word
+28?            Supply air temperatuur                 -500…+600 dºC        dºC                                          16 bit word
+29             Relatieve vochtigheid extract air      0-100%               %                                            16 bit word
+30             Relatieve vochtigheid exhaust air      0-100%               %                                            16 bit word
+31             Relatieve vochtigheid outdoor air      0-100%               %                                            16 bit word
+32             Relatieve vochtigheid supply air       0-100%               %                                            16 bit word
+59             Control voltage extract motor          0-100                dV                                           16 bit word
+60             Control voltage supply motor           0-100                dV                                           16 bit word
+61             Toerental extract motor                0-5000               rpm                                          16 bit word
+62             Toerental supply motor                 0-5000               rpm                                          16 bit word
+63             Bypass klep positie                    0                    gesloten                                     16 bit word
+63             Bypass klep positie                    1                    Open                                         16 bit word
+63             Bypass klep positie                    2                    Fout                                         16 bit word
+90             Actuele werk modus                     0                    Snooze mode                                  16 bit word
+90             Actuele werk modus                     1                    Lage snelheid                                16 bit word
+90             Actuele werk modus                     2                    Medium snelheid                              16 bit word
+90             Actuele werk modus                     3                    Hoge snelheid                                16 bit word
+90             Actuele werk modus                     4                    Boost                                        16 bit word
+90             Actuele werk modus                     5                    Auto modus (vochtigheid sensor)              16 bit word
+90             Actuele werk modus                     6                    Auto modus (VOC sensor)                      16 bit word
+90             Actuele werk modus                     7                    Auto modus (0-10V control)                   16 bit word
+90             Actuele werk modus                     8                    Boost in auto modus                          16 bit word
+90             Actuele werk modus                     9                    Week programma 1                             16 bit word
+90             Actuele werk modus                     10                   Week programma 2                             16 bit word
+90             Actuele werk modus                     11                   Week programma 3                             16 bit word
+90             Actuele werk modus                     12                   Week programma 4                             16 bit word
+
+Holding registers (Read/Write)
+Modbus Adress  Register                               Waardes        Beschrijving                                             Instelling            Data type
+0              Modbus slave adress                    1-247                                                                   1                     16 bit word
+1              Baudrate                               48             4800                                                                           16 bit word
+1              Baudrate                               96             9600                                                                           16 bit word
+1              Baudrate                               192            19200                                                                          16 bit word
+1              Baudrate                               384            38400                                                                          16 bit word
+2              Modbus parity                          0              Gelijk                                                   0                     16 bit word
+2              Modbus parity                          1              Ongelijk                                                                       16 bit word
+2              Modbus parity                          2              Geen pariteit (2 stop bits)                                                    16 bit word
+48             Dag                                    1-31           Dag (klok)                                               Set from factory      16 bit word
+49             Maand                                  1-12           Maand (klok)                                             Set from factory      16 bit word
+50             Jaar                                   2016-2100      Jaar (klok)                                              Set from factory      16 bit word
+51             Uur                                    0-23           Hour (Clock)                                             Set from factory      16 bit word
+52             Minuten                                0-59           Minuten (klok)                                           Set from factory      16 bit word
+53             Seconden                               0-59           Seconden (klok)                                          Set from factory      16 bit word
+56             Handmatig by-pass timer                1-8 h          Handmatige by-pass timer                                 8 h                   16 bit word
+63             Min ODA voor by-pass                   120…200 dºC    Minimale buitenlucht temperatuur voor by-pass activatie  130 dºC               16 bit word
+65             Min ETA voor by-pass                   210-300 dºC    Minimale extract temperatuur voor by-pass activatie      230 dºC               16 bit word
+67             Min ETA-ODA voor by-pass               30-60 dºC      Minimaal verschil tussen ETA-ODA voor by-pass            30 dºC                16 bit word
+132            Geselecteerd luchtvolume               0              Handmatig (laag luchtvolume)                             0                     16 bit word
+132            Geselecteerd luchtvolume               1              Handmatig (medium luchtvolume)                                                 16 bit word
+132            Geselecteerd luchtvolume               2              Handmatig (nominaal luchtvolume)                                               16 bit word
+132            Geselecteerd luchtvolume               3              Auto                                                                           16 bit word
+132            Geselecteerd luchtvolume               4              Snooze                                                                         16 bit word
+
