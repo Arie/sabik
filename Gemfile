@@ -2,7 +2,8 @@
 
 source 'https://rubygems.org'
 
-gem 'rmodbus'
 gem 'ccutrer-serialport'
+gem 'mqtt'
+gem 'rmodbus'
 gem 'pry'
 
