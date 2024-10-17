@@ -1,0 +1,51 @@
+AllCops:
+   SuggestExtensions: false
+   NewCops: enable
+
+Lint/MixedRegexpCaptureTypes:
+   Enabled: false
+
+Style/Documentation:
+   Enabled: false
+
+Metrics/MethodLength:
+   Enabled: false
+
+Metrics/ClassLength:
+   Enabled: false
+
+Metrics/AbcSize:
+   Enabled: false
+
+Metrics/PerceivedComplexity:
+   Enabled: false
+   Max: 10
+
+Metrics/CyclomaticComplexity:
+   Enabled: false
+   Max: 12
+
+Naming/InclusiveLanguage:
+   Enabled: false
+
+Style/GlobalVars:
+   Enabled: false
+
+Style/FormatStringToken:
+   Enabled: false
+
+Layout/LineLength:
+   Enabled: false
+
+Style/NumericLiterals:
+   Enabled: false
+
+Style/HashSyntax:
+   EnforcedShorthandSyntax: either
+
+Metrics/BlockLength:
+   Exclude:
+      - 'Rakefile'
+      - '**/*.rake'
+      - 'factories/**/*.rb'
+      - 'spec/**/*.rb'

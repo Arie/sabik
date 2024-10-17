@@ -1,5 +1,7 @@
-require_relative './secrets'
-require_relative './sabik'
+# frozen_string_literal: true
+
+require_relative 'secrets'
+require_relative 'sabik'
 require 'mqtt'
 require 'json'
 
