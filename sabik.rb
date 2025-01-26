@@ -3,7 +3,6 @@
 require 'rmodbus'
 require 'ccutrer-serialport'
 require 'json'
-require 'pry-nav'
 
 class Sabik
   attr_accessor :device, :baud_rate, :opts
@@ -17,6 +16,11 @@ class Sabik
   def set_air_volume!(value)
     write_single_register(132, value)
   end
+
+  def set_min_outdoor_temp_for_bypass!(value)
+    write_single_register(63, (value * 10.0).round)
+  end
+
 
   def set_min_extract_temp_for_bypass!(value)
     write_single_register(65, (value * 10.0).round)

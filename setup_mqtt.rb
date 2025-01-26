@@ -5,7 +5,7 @@ require_relative 'sabik'
 require 'mqtt'
 require 'json'
 
-@broker = "mqtt://mqtt:#{MQTT_PASSWORD}@127.0.0.1"
+@broker = "mqtt://#{MQTT_USER}:#{MQTT_PASSWORD}@#{MQTT_HOST}"
 @standard_options = { state_topic: 'homeassistant/sabik/sabikstatus',
                       enabled_by_default: 'true',
                       device: {
