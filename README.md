@@ -7,13 +7,12 @@ Control and monitor a Sabik 350 ventilation unit via Modbus and MQTT, allowing i
 - Ruby 3.0 or newer
 - USB-Modbus converter connected to the Sabik
 - MQTT broker (typically Home Assistant's built-in broker)
-- User in the `dialout` group for serial port access
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/sabik
+git clone https://github.com/Arie/sabik
 cd sabik
 ```
 
