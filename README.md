@@ -1,79 +1,156 @@
-# Sabik 350 Modbus
+# Sabik 350 Modbus Control
 
-Some code to read all information from a Sabik 350
+Control and monitor a Sabik 350 ventilation unit via Modbus and MQTT, allowing integration with Home Assistant.
 
-## Rough instructions
+## Prerequisites
 
-- Clone the project on a PC with USB-modbus converter connected to the Sabik
-- Have a working Ruby installation, something version 3.0+
-- Install the dependencies with `gem install bundler && bundle`
-- [Create a mqtt user in home assistant](https://community.home-assistant.io/t/mqtt-user-config/286096/2) if you don't already have one.
-- Edit the `secrets.rb` file:
+- Ruby 3.0 or newer
+- USB-Modbus converter connected to the Sabik
+- MQTT broker (typically Home Assistant's built-in broker)
+- User in the `dialout` group for serial port access
 
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/sabik
+cd sabik
+```
+
+2. Install dependencies:
+```bash
+gem install bundler && bundle
+```
+
+3. [Create a MQTT user in Home Assistant](https://community.home-assistant.io/t/mqtt-user-config/286096/2) if you don't already have one
+
+4. Create a `secrets.rb` file with your MQTT credentials:
 ```ruby
 MQTT_USER = 'your-ha-mqtt-user-here'
-MQTT_PASSWSORD = 'your-HA-mqtt-user-password-here'
+MQTT_PASSWORD = 'your-ha-mqtt-user-password-here'
 MQTT_HOST = 'ip-address-or-hostname-of-ha-mqtt'
 ```
-- Create the sensors in home assistant with `ruby setup_mqtt.rb`
-- Run `bundle console` and enter these commands:
 
+## Initial Setup
+
+1. Create the sensors in Home Assistant:
+```bash
+ruby setup_mqtt.rb
+```
+
+2. Test the Modbus connection:
+```bash
+bundle console
+```
+Then in the console:
 ```ruby
 require_relative 'sabik'
 Sabik.new.status
 ```
 
-If the output looks a little like this, all is good:
-
+You should see output like this:
 ```ruby
 {:active_alarms=>0,
  :filter_alarm=>0,
  :temperature_sensor_extract_air_status=>0,
- :temperature_sensor_exhaust_air_status=>0,
- :temperature_sensor_outdoor_air_status=>0,
- :temperature_sensor_supply_air_status=>0,
- :extract_air_fan_status=>0,
- :supply_air_fan_status=>0,
- :automatic_bypass=>0,
- :boost_contact_status=>0,
- :boost_status=>1,
- :reset_filter_alarm=>0,
- :manual_bypass=>0,
- :allow_automatic_bypass=>1,
- :summer_mode_status=>0,
- :manual_boost=>1,
- :snooze_mode=>0,
- :work_mode=>0,
- :communication_error=>0,
- :defrost_status=>"inactive",
- :extract_air_temperature=>201,
- :exhaust_air_temperature=>105,
- :outdoor_air_temperature=>57,
- :supply_air_temperature=>193,
- :rh_extract_air=>53,
- :rh_exhaust_air=>93,
- :rh_outdoor_air=>89,
- :rh_supply_air=>39,
- :control_voltage_extract_motor=>77,
- :control_voltage_supply_motor=>74,
- :rpm_extract_motor=>2594,
- :rpm_supply_motor=>2494,
- :bypass_valve_position=>"closed",
- :current_work_mode=>"boost",
- :modbus_slave_address=>1,
- :baudrate=>192,
- :modbus_parity=>0,
- :day=>27,
- :month=>1,
- :year=>2025,
- :hour=>1,
- :minutes=>25,
- :seconds=>5,
- :manual_bypass_timer=>8,
- :min_oda_for_bypass=>120,
- :min_eta_for_bypass=>230,
- :min_eta_oda_for_bypass=>30,
+ # ... more status values ...
  :selected_air_volume=>1}
 ```
 
-Run `ruby mqtt.rb` in the background and it will report the Sabik status to home assistant over MQTT every 5 seconds.
+## Running the MQTT Subscriber
+
+### Manual Start
+```bash
+ruby mqtt_subscriber.rb
+```
+
+### As a Systemd User Service
+
+1. Create the systemd user directory:
+```bash
+mkdir -p ~/.config/systemd/user/
+```
+
+2. Create `~/.config/systemd/user/sabik-mqtt.service`:
+```ini
+[Unit]
+Description=Sabik MQTT Control Service
+After=network.target
+
+[Service]
+Type=simple
+Environment="MQTT_HOST=your-ha-mqtt-host"
+Environment="MQTT_USER=your-ha-mqtt-user"
+Environment="MQTT_PASSWORD=your-ha-mqtt-password"
+WorkingDirectory=%h/path/to/sabik
+ExecStart=/usr/bin/ruby mqtt_subscriber.rb
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
+```
+
+3. Enable and start the service:
+```bash
+# Enable service
+systemctl --user enable sabik-mqtt.service
+
+# Start service
+systemctl --user start sabik-mqtt.service
+
+# Check status
+systemctl --user status sabik-mqtt.service
+```
+
+## Testing and Control
+
+Use the test script for manual control:
+```bash
+ruby test_mqtt_control.rb
+```
+
+Features available through the test script:
+- Operation modes (off/auto/manual)
+- Fan speeds (low/medium/high/auto/snooze)
+- Bypass temperature settings:
+  - Minimum indoor temperature (21-30°C)
+  - Minimum outdoor temperature (12-20°C)
+  - Minimum temperature difference (3-6°C)
+- Manual and automatic bypass control
+- Summer mode control
+- Boost mode
+- Time settings and synchronization
+- Status monitoring
+
+## Temperature-Dependent Features
+
+### Bypass Mode
+Bypass requires all these conditions:
+- Indoor (Extract) temperature > minimum (default 23°C)
+- Outdoor temperature > minimum (default 13°C)
+- Temperature difference > minimum (default 3°C)
+
+### Summer Mode
+Requires:
+- Outdoor temperature above minimum (uses same threshold as bypass)
+
+## Troubleshooting
+
+1. Serial Port Access:
+```bash
+# Add user to dialout group
+sudo usermod -a -G dialout $USER
+# Verify permissions
+ls -l /dev/ttyUSB0
+```
+
+2. View Service Logs:
+```bash
+journalctl --user -u sabik-mqtt.service -f
+```
+
+3. Test MQTT Connection:
+```bash
+mosquitto_sub -h your-ha-mqtt-host -u your-mqtt-user -P your-mqtt-password -t 'homeassistant/climate/sabik/#'
+```
