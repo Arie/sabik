@@ -4,11 +4,38 @@ Control and monitor a Sabik 350 ventilation unit via Modbus and MQTT, allowing i
 
 ## Prerequisites
 
-- Ruby 3.0 or newer
 - USB-Modbus converter connected to the Sabik
 - MQTT broker (typically Home Assistant's built-in broker)
 
-## Installation
+## Running with Docker (Recommended)
+
+1. Add your user to the `dialout` group for USB access:
+```bash
+sudo usermod -a -G dialout $USER
+# Log out and back in for changes to take effect
+```
+
+2. Clone and build:
+```bash
+git clone https://github.com/Arie/sabik
+cd sabik
+docker compose build
+```
+
+3. Edit `docker-compose.yml` to set your MQTT credentials and USB device path (default is `/dev/ttyUSB0`).
+
+4. Run:
+```bash
+docker compose up -d
+```
+This will automatically set up the sensors in Home Assistant and start the MQTT subscriber.
+
+5. View logs:
+```bash
+docker compose logs -f
+```
+
+## Manual Installation
 
 1. Clone the repository:
 ```bash

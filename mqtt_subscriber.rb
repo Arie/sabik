@@ -29,7 +29,7 @@ class MQTTSubscriber
 
     # Setup logging
     @logger = Logger.new(STDOUT)
-    @logger.level = Logger::DEBUG
+    @logger.level = Logger::INFO
     @logger.formatter = proc do |severity, datetime, progname, msg|
       "#{datetime.strftime('%Y-%m-%d %H:%M:%S')} [#{severity}] Subscriber: #{msg}\n"
     end

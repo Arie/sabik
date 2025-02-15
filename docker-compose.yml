@@ -1,0 +1,17 @@
+services:
+  sabik:
+    build: .
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"  # Adjust this path to match your USB device
+    environment:
+      - MQTT_HOST=localhost # Adjust these as needed
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=mqtt
+      - MQTT_PASSWORD=password
+    restart: unless-stopped
+    networks:
+      - mqtt-net
+
+networks:
+  mqtt-net:
+    driver: bridge
