@@ -116,6 +116,12 @@ class Sabik
         output[key] = holding_registers[i]
       end
     end
+
+    # Convert temperature values
+    [:extract_air_temperature, :exhaust_air_temperature, :outdoor_air_temperature, :supply_air_temperature].each do |key|
+      output[key] = convert_temperature(output[key]) if output[key]
+    end
+
     output[:current_work_mode] = working_mode_to_string(output[:current_work_mode])
     output[:defrost_status] = defrost_status_to_string(output[:defrost_status])
     output[:bypass_valve_position] = bypass_valve_position_to_string(output[:bypass_valve_position])
@@ -232,6 +238,11 @@ class Sabik
       slave.read_input_registers(59, 5),
       slave.read_input_register(90)
     ].flatten
+  end
+
+  def convert_temperature(raw_value)
+    # Convert 16-bit unsigned to signed, keeping deci-Celsius value
+    raw_value > 32767 ? raw_value - 65536 : raw_value
   end
 
   def all_input_registers_keys
