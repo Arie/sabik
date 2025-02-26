@@ -47,11 +47,11 @@ class Sabik
   end
 
   def allow_auto_bypass!
-    write_single_coil(8, 0)
+    write_single_coil(8, 1)
   end
 
   def deny_auto_bypass!
-    write_single_coil(8, 1)
+    write_single_coil(8, 0)
   end
 
   def summer!
