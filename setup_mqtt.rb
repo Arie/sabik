@@ -64,6 +64,30 @@ def publish_temperatures(client)
             unit_of_measurement: '°C',
             unique_id: 'sabik_350_outdoor_air_temperature'
           })
+  publish(client, 'sabik_min_oda_for_bypass', {
+            name: 'Min Outdoor Temperature for Bypass',
+            value_template: "{{ value_json['min_oda_for_bypass']| float / 10.0 | float }}",
+            state_class: 'measurement',
+            device_class: 'temperature',
+            unit_of_measurement: '°C',
+            unique_id: 'sabik_350_min_oda_for_bypass'
+          })
+  publish(client, 'sabik_min_eta_for_bypass', {
+            name: 'Min Extract Temperature for Bypass',
+            value_template: "{{ value_json['min_eta_for_bypass']| float / 10.0 | float }}",
+            state_class: 'measurement',
+            device_class: 'temperature',
+            unit_of_measurement: '°C',
+            unique_id: 'sabik_350_min_eta_for_bypass'
+          })
+  publish(client, 'sabik_min_eta_oda_for_bypass', {
+            name: 'Min Temperature Difference for Bypass',
+            value_template: "{{ value_json['min_eta_oda_for_bypass']| float / 10.0 | float }}",
+            state_class: 'measurement',
+            device_class: 'temperature',
+            unit_of_measurement: '°C',
+            unique_id: 'sabik_350_min_eta_oda_for_bypass'
+          })
 end
 
 def publish_motors(client)

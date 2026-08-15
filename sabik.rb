@@ -118,7 +118,7 @@ class Sabik
     end
 
     # Convert temperature values
-    [:extract_air_temperature, :exhaust_air_temperature, :outdoor_air_temperature, :supply_air_temperature].each do |key|
+    [:extract_air_temperature, :exhaust_air_temperature, :outdoor_air_temperature, :supply_air_temperature, :min_oda_for_bypass, :min_eta_for_bypass, :min_eta_oda_for_bypass].each do |key|
       output[key] = convert_temperature(output[key]) if output[key]
     end
 
