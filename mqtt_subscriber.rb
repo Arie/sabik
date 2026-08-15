@@ -28,6 +28,7 @@ class MQTTSubscriber
     @sabik_mutex = Mutex.new
 
     # Setup logging
+    STDOUT.sync = true # journald gets lines live
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::INFO
     @logger.formatter = proc do |severity, datetime, progname, msg|
@@ -59,6 +60,12 @@ class MQTTSubscriber
             begin
               sleep STATUS_UPDATE_INTERVAL
               publish_full_status
+            rescue Errno::EPIPE, Errno::ECONNRESET, IOError, SocketError => e
+              # client.get never raises once the gem's reader thread dies, so hand
+              # the exception to the main thread to wake the retry in #start.
+              @logger.error("Connection lost in status thread: #{e.message} - triggering reconnect")
+              Thread.main.raise(e)
+              break
             rescue StandardError => e
               @logger.error("Error in status thread: #{e.message}")
               @logger.debug(e.backtrace.join("\n"))
