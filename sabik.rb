@@ -8,9 +8,16 @@ class Sabik
   attr_accessor :device, :baud_rate, :opts
 
   def initialize
-    @device = '/dev/ttyUSB0'
+    @device = detect_device
     @baud_rate = 19_200
     @opts = { parity: :even }
+  end
+
+  def detect_device
+    ENV['SERIAL_DEVICE'] ||
+      Dir.glob('/dev/serial/by-id/*FTDI*').min ||
+      Dir.glob('/dev/ttyUSB*').min ||
+      raise('No serial adapter found; set SERIAL_DEVICE to the device path')
   end
 
   def set_air_volume!(value)

@@ -2,8 +2,10 @@ services:
   sabik:
     build: .
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"  # Adjust this path to match your USB device
+      # Stable across host renumbering; find yours with: ls /dev/serial/by-id/
+      - "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AB8M4JG7-if00-port0:/dev/ttyUSB0"
     environment:
+      - SERIAL_DEVICE=/dev/ttyUSB0
       - MQTT_HOST=localhost # Adjust these as needed
       - MQTT_PORT=1883
       - MQTT_USERNAME=mqtt
