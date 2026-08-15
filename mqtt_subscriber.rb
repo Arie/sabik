@@ -87,17 +87,28 @@ class MQTTSubscriber
       @logger.error("MQTT Protocol Error: #{e.message}")
       @logger.error("This might be due to invalid credentials")
       @logger.debug(e.backtrace.join("\n"))
+      reset_connection!
       sleep 5
       retry
     rescue StandardError => e
       @logger.error("Error in MQTT client: #{e.message}")
       @logger.debug(e.backtrace.join("\n"))
+      reset_connection!
       sleep 5
       retry
     end
   end
 
   private
+
+  # mqtt 0.6.0 leaves @socket open and starts no read thread when CONNECT times
+  # out, so the next #connect skips the handshake and #get blocks forever while
+  # publishes still succeed. Close it so the retry really reconnects.
+  def reset_connection!
+    @client.disconnect(false)
+  rescue StandardError => e
+    @logger.debug("Ignoring error while resetting connection: #{e.message}")
+  end
 
   def publish_discovery_config
     config = {
