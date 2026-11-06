@@ -165,17 +165,17 @@ class Sabik
       'boost'
     when 5
       'auto_humidity'
-    when 7
+    when 6
       'auto_voc'
-    when 8
+    when 7
       'auto_0_10v_control'
-    when 9
+    when 8
       'auto_boost'
-    when 10
+    when 9
       'week_program_1'
-    when 11
+    when 10
       'week_program_2'
-    when 12
+    when 11
       'week_program_3'
     else
       'unknown'
