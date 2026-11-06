@@ -177,6 +177,8 @@ class Sabik
       'week_program_2'
     when 11
       'week_program_3'
+    when 12
+      'week_program_4'
     else
       'unknown'
     end
