@@ -201,7 +201,7 @@ class MQTTSubscriber
 
     # Publish boost state separately
     @client.publish("#{MQTT_TOPIC_PREFIX}/boost/state",
-                   status[:current_work_mode] == 'boost' ? 'ON' : 'OFF')
+                   %w[boost auto_boost].include?(status[:current_work_mode]) ? 'ON' : 'OFF')
 
     # Publish bypass state
     @client.publish("#{MQTT_TOPIC_PREFIX}/bypass/state",
