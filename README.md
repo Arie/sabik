@@ -1,5 +1,10 @@
 # Sabik 350 Modbus Control
 
+> [!IMPORTANT]
+> **This project is archived.** It has been replaced by **[Sabik for Home Assistant](https://github.com/Arie/ha-integration-sabik)**, a native Home Assistant integration that talks Modbus to the unit directly: no MQTT broker, no bridge, no YAML, and the dashboard card is built in.
+>
+> Already using this bridge? The integration has a one-click migration that keeps your entity IDs, history and customisations. See [Migrating from the MQTT bridge](https://github.com/Arie/ha-integration-sabik#migrating-from-the-mqtt-bridge).
+
 Control and monitor a Sabik 350 ventilation unit via Modbus and MQTT, allowing integration with Home Assistant.
 
 ## Prerequisites
